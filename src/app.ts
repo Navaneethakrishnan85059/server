@@ -1,9 +1,12 @@
-import express from "express"
+import express from "express";
 
-const app=express()
+const app = express();
 
-const port:number=6000
+const port: number = 6000;
 
-app.listen(()=>{
-    console.log('port :>> ', port);
-})
+
+
+
+app.listen(() => {
+  console.log("port :>> ", port);
+});
