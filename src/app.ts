@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/dbConfig";
-import errorHandler from "./controllers/userController";
+import errorHandler from "./middlewares/errorMiddleWare";
+
 
 const app = express();
 
