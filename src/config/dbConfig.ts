@@ -1,7 +1,7 @@
-import { rejects } from "assert";
+import { rejects } from "node:assert";
 import { configDotenv } from "dotenv"
 import mongoose from "mongoose";
-import { resolve } from "path";
+import { resolve } from "node:path";
 
 configDotenv()
 
