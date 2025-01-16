@@ -1,5 +1,5 @@
 import  type { Request,Response,NextFunction} from "express"
-const errorHandler=(err:Error,req:Request,res:Response,next:NextFunction)=>{
+function errorHandler(err:Error,req:Request,res:Response,next:NextFunction){
 
     console.error("error Stack:",err.stack);
     

@@ -13,15 +13,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "6.1.0",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "generate-unique-id": "^2.0.3",
+    "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
+    "@types/nodemailer": "^6.4.17",
     "@types/nodemon": "^1.19.6",
     "prisma": "^6.1.0",
     "ts-node": "^10.9.2",
