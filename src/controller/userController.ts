@@ -18,6 +18,17 @@ export const userController={
       next(error)  
     }
 },
+async GetAllByEmail(req:Request,res:Response,next:NextFunction){
+  try {
+    const {email}=req.body;
+    const getUserByEmail=new userServices();
+    const UserGetByEmail=await getUserByEmail.GetUserByEmail(email)
+    res.json(UserGetByEmail)
+    
+  } catch (error) {
+    next(error)
+  }
+}
 }
 
  

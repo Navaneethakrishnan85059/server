@@ -1,5 +1,4 @@
 import generateUniqueId from "generate-unique-id";
-import { userTypes } from "../../types/user";
 import { oneTimePassword } from "../../utils/oneTimePassword";
 import { USER } from "../../repositories/user_Repositories/Users";
 import { MailSender } from "../../utils/nodemail";
@@ -12,35 +11,58 @@ export class userServices{
         password:string,
         phone:number)=>{
         try {
-            
-            const ids=generateUniqueId({
-                length:10,
-                useLetters:false,
-                useNumbers:true
-            })
-            const otp=await oneTimePassword();
-            const MailMessage=await MailSender(email,otp);
-            const haspassword=await passWordEncDec.encryption(password)
-            const userData={
-                id:ids,
-                username:name,
-                email:email,
-                password:haspassword||"",
-                phone:phone,
-                otp:otp,
-                verified:false,
+
+            const verifiedEmail=await USER.getByEmail(email)
+
+            if(verifiedEmail){
+                return "email Already Exist"
             }
-            console.log(userData);
+            else{
+                const ids=generateUniqueId({
+                    length:10,
+                    useLetters:false,
+                    useNumbers:true
+                })
+                const otp=await oneTimePassword();
+                const MailMessage=await MailSender(email,otp);
+                const haspassword=await passWordEncDec.encryption(password)
+                const userData={
+                    id:ids,
+                    username:name,
+                    email:email,
+                    password:haspassword||"",
+                    phone:phone,
+                    otp:otp,
+                    verified:false,
+                }
+                console.log(userData);
+                
+                
+                const PostUserDetails=await USER.add(userData)
+             return PostUserDetails
+            }
             
-            
-            const PostUserDetails=await USER.add(userData)
-         return PostUserDetails
+           
             
 
         } catch (error) {
             console.error(error);
             return error
         }
+    }
+
+    GetUserByEmail=async(email:string)=>{
+try {
+    const GetUserByEmail=await USER.getByEmail(email)
+    if(GetUserByEmail){
+
+        return GetUserByEmail
+    }else{
+        return "user is not created"
+    }
+} catch (error) {
+    return error
+}
     }
 }
 
