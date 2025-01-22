@@ -9,7 +9,7 @@ export class userServices{
     AddUserDetails=async(name:string,
         email:string,
         password:string,
-        phone:number)=>{
+        phone:string)=>{
         try {
 
             const verifiedEmail=await USER.getByEmail(email)
@@ -33,7 +33,7 @@ export class userServices{
                     password:haspassword||"",
                     phone:phone,
                     otp:otp,
-                    verified:false,
+                    
                 }
                 console.log(userData);
                 

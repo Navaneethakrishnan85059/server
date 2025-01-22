@@ -3,9 +3,9 @@ export type userTypes={
     username:string,
     email:string,
     password:string,
-    phone:number,
+    phone:string,
     otp:number,
-    verified:boolean
+
 }
 
 
