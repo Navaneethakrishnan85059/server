@@ -1,6 +1,6 @@
 
 import { PrismaClient } from "@prisma/client";
-import { userTypes } from "../../types/user"
+import type { userTypes } from "../../types/user"
 
 
 const prisma=new PrismaClient()
@@ -48,12 +48,26 @@ export const USER={
         }
 
     },
-    async update(){
+    async update(email:string){
+        try {
+            const verifiedUser=await prisma.user.update({where:{email:email},data:{verified:true}});
+            return verifiedUser
+        } catch (error) {
+            return error
+        }
 
     },
 
-    async delete(){
-
+    async deleteSingleUser(id:string){
+        try {
+            const deleteUser=await prisma.user.delete({where:{
+                id:id
+            }})
+            return deleteUser
+        } catch (error) {
+            return error
+        }
+        
     },
     async deleteAll(){
 
