@@ -13,13 +13,14 @@ try {
    
 }
 },
-async decryption(password:string){
+async decryption(password:string,plaintext:string){
     try {
-        const plaintext=password;
-        const saltRound=10;
+        
     
-        const encrypt=await bcrypt.hash(plaintext,saltRound);
-        return encrypt
+        const decrypt=await bcrypt.compare(password,plaintext)
+        console.log("decryot",decrypt);
+        
+        return decrypt
     } catch (error) {
         console.error(error);
         

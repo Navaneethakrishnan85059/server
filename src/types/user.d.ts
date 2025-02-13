@@ -19,4 +19,15 @@ export type userGetEmail={
 
 }
 
+export type LoginUserGetEmail={
+    id:string,
+    username:string,
+    email:string,
+ 
+    phone:string,
+  
+    verified:boolean
+
+}
+
 

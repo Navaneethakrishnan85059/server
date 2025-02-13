@@ -8,9 +8,9 @@ export const userController = {
 
   async AddUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, email, phone, password } = req.body
+      const { username, email, phone, password } = req.body
       const userClasses = new userServices()
-      const users = await userClasses.AddUserDetails(name, email, password, phone)
+      const users = await userClasses.AddUserDetails(username, email, password, phone)
       console.log("users", users);
       res.json(users)
 
@@ -56,6 +56,20 @@ export const userController = {
         next(error)
       }
 
+  },
+  async CheckUser(req:Request,res:Response,next:NextFunction){
+try {
+  const{email,password}=req.body;
+  const UserServices=new userServices();
+  const CheckUser=await UserServices.CheckUserByEmailPassword(email,password);
+  console.log(CheckUser);
+  
+  res.json({CheckUser})
+} catch (error) {
+  console.error(error);
+  next(error)
+  
+}
   }
 }
 

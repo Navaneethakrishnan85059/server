@@ -3,11 +3,11 @@ import { oneTimePassword } from "../../utils/oneTimePassword";
 import { USER } from "../../repositories/user_Repositories/Users";
 import { MailSender } from "../../utils/nodemail";
 import { passWordEncDec } from "../../utils/passwordUtils";
-import type{ userGetEmail } from "../../types/user";
-
+import type{ LoginUserGetEmail, userGetEmail } from "../../types/user";
+import jwt from "jsonwebtoken";
 
 export class userServices {
-    AddUserDetails = async (name: string,
+    AddUserDetails = async (username: string,
         email: string,
         password: string,
         phone: string) => {
@@ -29,7 +29,7 @@ export class userServices {
                 const haspassword = await passWordEncDec.encryption(password)
                 const userData = {
                     id: ids,
-                    username: name,
+                    username: username,
                     email: email,
                     password: haspassword || "",
                     phone: phone,
@@ -52,6 +52,43 @@ export class userServices {
         }
     }
 
+
+    CheckUserByEmailPassword=async(email:string,password:string)=>{
+try {
+    const GetUserByEmail=await USER.getByEmail(email) as userGetEmail;
+   
+    if(GetUserByEmail){
+        const decryption=await passWordEncDec.decryption(password,GetUserByEmail.password)
+        if(decryption===true){
+            if(GetUserByEmail.verified===true){
+                const EditUser:LoginUserGetEmail={
+                    id:GetUserByEmail.id,
+                    email:GetUserByEmail.email,
+                    username:GetUserByEmail.username,
+                    verified:GetUserByEmail.verified,
+                    phone:GetUserByEmail.phone
+            
+                }
+                
+                const Token=jwt.sign({data:EditUser},"1234",{algorithm:"HS512"})
+                return Token
+            }else{
+                return "account is not verified";
+            }
+            
+        }else{
+            return "password is not correct";
+        }
+       
+    }
+    else{
+        return "user is not created"
+    }
+} catch (error) {
+    return error
+}
+    }
+
     GetUserByEmail = async (email:string) => {
         try {
             const GetUserByEmail = await USER.getByEmail(email)
@@ -61,6 +98,7 @@ export class userServices {
             } if(!GetUserByEmail) {
                 return "user is not created"
             }
+            
         } catch (error) {
             return error
         }
@@ -72,14 +110,17 @@ export class userServices {
 
             const GetAllByEmail = await USER.getByEmail(email) as userGetEmail;
         
-            
-            if (GetAllByEmail?.otp) {
+            if(GetAllByEmail===null){
+                return "user is not Created"
+           }
+            if (GetAllByEmail?.otp===otp) {
                 const VerifiedUser=await USER.update(email);
                 return VerifiedUser
+            }else{
+                return "please Enter valid otp"
             }
-             if(GetAllByEmail===null){
-                 return "user is not Created"
-            }
+            
+           
         } catch (error) {
             return error
         }
